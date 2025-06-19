@@ -1,0 +1,37 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>
+      Login
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list>
+      <ion-item>
+        <ion-input 
+          label="Username" 
+          placeholder="Username"
+          [(ngModel)]="username">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input 
+          label="Password" 
+          type="password" 
+          placeholder="Password" 
+          [(ngModel)]="password">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-note>Not a user yet? <a routerLink="/user/register">Create Account</a></ion-note>
+  </ion-card-content>
+  <ion-button fill="clear" (click)="login()">Login</ion-button>
+</ion-card>
+
+<ion-toast
+  message="Username or Password are wrong"
+  [isOpen]="isWrongCredentialToastOpen"
+  duration="5000"
+  color="danger"
+  swipeGesture="vertical"
+  (didDismiss)="isWrongCredentialToastOpen = false"
+></ion-toast>
