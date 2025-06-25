@@ -6,7 +6,7 @@
     </ion-button>
   </ion-item>
   <ion-item-sliding *ngFor="let invite of invites">
-    <ion-item>
+    <ion-item button (click)="copyToClipboard(invite)">
       <a [href]="getInviteLink(invite.code)">{{ invite.code }}</a>
       <ion-badge slot="end" [color]="getBadgeColor(invite)"> {{invite.uses}} / {{ invite.max_uses }} </ion-badge>
     </ion-item>

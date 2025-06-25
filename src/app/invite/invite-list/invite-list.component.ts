@@ -1,5 +1,6 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { Share } from '@capacitor/share';
+import { Clipboard } from '@capacitor/clipboard';
 
 import { Invite } from '../invite';
 import { FlatService } from 'src/app/flat/flat.service';
@@ -77,6 +78,17 @@ export class InviteListComponent  implements OnInit {
       url: this.getInviteLink(invite.code),
       dialogTitle: 'Invite your flatmane',
     });
+  }
+
+  public async copyToClipboard(invite: Invite){
+    try{
+      await Clipboard.write({
+        url: this.getInviteLink(invite.code)
+      });
+    }catch{
+      console.log("Clipboard not availiable");
+    }
+    
   }
 
 }
