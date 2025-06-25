@@ -51,14 +51,16 @@ export class FlatDetailComponent {
 
   ionViewDidEnter(){
     this.loadFlat();
-    this.loadFlatMembers();
-    this.loadFlatAdmins();
   }
 
   public loadFlat(){
     this._flatService.getFlat().subscribe({
       next: (data) => {
         this.flat = data;
+        this.flatMembers = data.members as Array<User>;
+        this.flatAdmins = data.admins as Array<User>;
+        this.removeAdminsFromMembers();
+        this.checkIsAdmin();
       }
     });
   }
@@ -68,27 +70,6 @@ export class FlatDetailComponent {
       next: (d) => {
         this.flat = d;
         this.showSuccessToast = true;
-      }
-    });
-  }
-
-  public loadFlatMembers(){
-    this._flatService.getFlatMembers().subscribe({
-      next: (data) => {
-        this.flatMembers = data;
-        this.flatMembersShown = data;
-        this.checkIsAdmin();
-        this.removeAdminsFromMembers();
-      }
-    });
-  }
-
-  public loadFlatAdmins(){
-    this._flatService.getFlatAdmins().subscribe({
-      next: (data) => {
-        this.flatAdmins = data;
-        this.checkIsAdmin();
-        this.removeAdminsFromMembers();
       }
     });
   }
@@ -126,7 +107,7 @@ export class FlatDetailComponent {
   public makeAdmin(user_id: number|undefined){
     this._flatService.makeAdmin(user_id as number).subscribe({
       next: (d) => {
-        this.loadFlatAdmins();
+        this.loadFlat();
         this.showSuccessToast = true;
       }
     });
@@ -135,7 +116,7 @@ export class FlatDetailComponent {
   public revokeAdmin(user_id: number|undefined){
     this._flatService.revokeAdmin(user_id as number).subscribe({
       next: (d) => {
-        this.loadFlatAdmins();
+        this.loadFlat();
         this.showSuccessToast = true;
       }
     });
@@ -144,8 +125,7 @@ export class FlatDetailComponent {
   public removeMember(user_id: number|undefined){
     this._flatService.removeFlatMember(user_id as number).subscribe({
       next: (d) => {
-        this.loadFlatMembers();
-        this.loadFlatAdmins();
+        this.loadFlat();
         this.showSuccessToast = true;
       }
     })
