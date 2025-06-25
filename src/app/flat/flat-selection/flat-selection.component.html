@@ -1,0 +1,8 @@
+<ion-item *ngIf="show">
+  <ion-select [value]="selectedFlat" interface="action-sheet" (ionChange)="handleSelect($event)">
+    <div slot="label">
+      Select flat
+    </div>
+    <ion-select-option *ngFor="let flat of flats" value="{{ flat.id }}">{{ flat.name }}</ion-select-option>
+  </ion-select>
+</ion-item>

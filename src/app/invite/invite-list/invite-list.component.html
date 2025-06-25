@@ -1,0 +1,19 @@
+<ion-list>
+  <ion-item>
+    <ion-label><b>Create new Invite</b></ion-label>
+    <ion-button slot="end" fill="none" color="success" (click)="createInvite()">
+      <ion-icon icon="add"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <ion-item-sliding *ngFor="let invite of invites">
+    <ion-item>
+      <a [href]="getInviteLink(invite.code)">{{ invite.code }}</a>
+      <ion-badge slot="end" [color]="getBadgeColor(invite)"> {{invite.uses}} / {{ invite.max_uses }} </ion-badge>
+    </ion-item>
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="deleteInvite(invite)">
+        delete
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>

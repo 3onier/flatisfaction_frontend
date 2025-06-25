@@ -7,7 +7,29 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        This will be the main menu
+          <ion-list lines="none">
+            <ion-list-header>
+              Me
+            </ion-list-header>
+            <ion-item button [routerLink]="['/user/profile']">
+              <ion-icon name="person" slot="start"></ion-icon>
+              <ion-label>
+                My Profile
+              </ion-label>
+            </ion-item>
+
+            <ion-list-header>
+              <ion-label>Flat</ion-label>
+              <ion-button color="success" [routerLink]="['/flat/create']">
+                <ion-icon icon="add"></ion-icon>
+              </ion-button>
+            </ion-list-header>
+            <app-flat-selection></app-flat-selection>
+            <ion-item button [routerLink]="['/flat/detail']">
+              <ion-icon icon="hammer" slot="start"></ion-icon>
+              <ion-label>Flat Settings</ion-label>
+            </ion-item>
+        </ion-list>
       </ion-content>
     </ion-menu>
     <div class="ion-page" id="main">
