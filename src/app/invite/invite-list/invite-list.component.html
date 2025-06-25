@@ -14,6 +14,9 @@
       <ion-item-option color="danger" (click)="deleteInvite(invite)">
         delete
       </ion-item-option>
+      <ion-item-option *ngIf="canShare" color="success" (click)="shareInvite(invite)">
+        share
+      </ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
 </ion-list>

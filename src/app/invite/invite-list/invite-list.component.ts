@@ -1,4 +1,6 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
+import { Share } from '@capacitor/share';
+
 import { Invite } from '../invite';
 import { FlatService } from 'src/app/flat/flat.service';
 import { InviteService } from '../invite.service';
@@ -14,6 +16,8 @@ import { environment } from 'src/environments/environment';
 export class InviteListComponent  implements OnInit {
 
   public invites: Array<Invite> = [];
+  
+  public canShare: boolean = false;
 
   private _inviteService: InviteService = inject(InviteService);
 
@@ -21,6 +25,11 @@ export class InviteListComponent  implements OnInit {
 
   ngOnInit() {
     this.loadInvites();
+    Share.canShare().then(
+      (r) => {
+        this.canShare = r.value;
+      }
+    );
   }
 
   public loadInvites(){
@@ -59,6 +68,15 @@ export class InviteListComponent  implements OnInit {
 
   public getInviteLink(code: string): string{
     return environment.appUrl + "invite/open/" + code;
+  }
+
+  public async shareInvite(invite: Invite){
+    await Share.share({
+      title: 'Welcome to our Flat',
+      text: 'Please join the flat on the App to manage our flat together :D',
+      url: this.getInviteLink(invite.code),
+      dialogTitle: 'Invite your flatmane',
+    });
   }
 
 }
