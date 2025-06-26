@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { Share } from '@capacitor/share';
 import { Clipboard } from '@capacitor/clipboard';
 
@@ -6,6 +6,7 @@ import { Invite } from '../invite';
 import { FlatService } from 'src/app/flat/flat.service';
 import { InviteService } from '../invite.service';
 import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-invite-list',
@@ -14,23 +15,34 @@ import { environment } from 'src/environments/environment';
   standalone: false,
   providers: [FlatService]
 })
-export class InviteListComponent  implements OnInit {
+export class InviteListComponent  implements OnInit, OnDestroy {
 
   public invites: Array<Invite> = [];
   
   public canShare: boolean = false;
 
   private _inviteService: InviteService = inject(InviteService);
+  private _changeFlatSubscription: Subscription;
 
-  constructor() { }
+  constructor() {
+    this._changeFlatSubscription = FlatService.flatChangeEvent$.subscribe(this.refresh);
+  }
 
   ngOnInit() {
-    this.loadInvites();
+    this.refresh();
     Share.canShare().then(
       (r) => {
         this.canShare = r.value;
       }
     );
+  }
+
+  public refresh(){
+    this.loadInvites();
+  }
+
+  ngOnDestroy(): void {
+    this._changeFlatSubscription.unsubscribe();
   }
 
   public loadInvites(){
