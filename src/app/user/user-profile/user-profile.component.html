@@ -1,69 +1,79 @@
-<div>
 
-<ion-grid>
-  <ion-row class="ion-justify-content-center">
-    <ion-col>
-      <ion-avatar class="center">
-        <img *ngIf="userProfile.avatar" alt="User profile picture" [src]="userProfile.avatar" />
-        <img *ngIf="!userProfile.avatar" alt="User profile picture" src="/assets/icon/avatar.svg" />
-      </ion-avatar>
-    </ion-col>
-  </ion-row> 
-</ion-grid>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Your Profile
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col>
+        <ion-avatar class="center">
+          <img *ngIf="userProfile.avatar" alt="User profile picture" [src]="userProfile.avatar" />
+          <img *ngIf="!userProfile.avatar" alt="User profile picture" src="/assets/icon/avatar.svg" />
+        </ion-avatar>
+      </ion-col>
+    </ion-row> 
+  </ion-grid>
 
-<ion-accordion-group expand="inset" value="ion-accordion-0">
+  <ion-accordion-group expand="inset" value="ion-accordion-0">
 
-  <ion-accordion toggleIcon="pencil-outline">
-    <ion-item slot="header" color="light">
-      <ion-icon name="person" slot="start"></ion-icon>
-      <ion-label>Personal Information</ion-label>
-    </ion-item>
-    <div slot="content">
-      <ion-list>
-        <ion-item>
-          <ion-input label="Username"labelPlacement="floating" [(ngModel)]="user.username"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="E-Mail" labelPlacement="floating" [(ngModel)]="user.email"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="First Name" labelPlacement="floating" [(ngModel)]="user.first_name"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Last Name" labelPlacement="floating" [(ngModel)]="user.last_name"></ion-input>
-        </ion-item>
-        <div class="ion-padding">
-          <ion-button (click)="updateUser()">Save</ion-button>
-        </div>
-      </ion-list>
-    </div>
-    
-  </ion-accordion>
+    <ion-accordion toggleIcon="pencil-outline">
+      <ion-item slot="header" color="light">
+        <ion-icon name="person" slot="start"></ion-icon>
+        <ion-label>Personal Information</ion-label>
+      </ion-item>
+      <div slot="content">
+        <ion-list>
+          <ion-item>
+            <ion-input label="Username"labelPlacement="floating" [(ngModel)]="user.username"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="E-Mail" labelPlacement="floating" [(ngModel)]="user.email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="First Name" labelPlacement="floating" [(ngModel)]="user.first_name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Last Name" labelPlacement="floating" [(ngModel)]="user.last_name"></ion-input>
+          </ion-item>
+          <div class="ion-padding">
+            <ion-button (click)="updateUser()">Save</ion-button>
+          </div>
+        </ion-list>
+      </div>
+      
+    </ion-accordion>
 
-  <ion-accordion toggleIcon="pencil-outline">
-    <ion-item slot="header" color="light">
-      <ion-icon name="lock-closed" slot="start"></ion-icon>
-      <ion-label>Password</ion-label>
-    </ion-item>
-    <div slot="content">
-      <ion-list>
-        <ion-item>
-          <ion-input label="Old Password"labelPlacement="floating" type="password" placeholder="My0ldP4ssw0rd" [(ngModel)]="oldPassword"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="New Password" labelPlacement="floating" type="password" placeholder="MyN3wP4ssw0rd!" [(ngModel)]="newPassword"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Confirm New Password" labelPlacement="floating" type="password" placeholder="MyN3wP4ssw0rd!" [(ngModel)]="newPasswordConfirm"></ion-input>
-        </ion-item>
-        <div class="ion-padding">
-          <ion-button (click)="changePassword()">Save</ion-button>
-        </div>
-      </ion-list>
-    </div>
-  </ion-accordion>
-</ion-accordion-group>
-</div>
+    <ion-accordion toggleIcon="pencil-outline">
+      <ion-item slot="header" color="light">
+        <ion-icon name="lock-closed" slot="start"></ion-icon>
+        <ion-label>Password</ion-label>
+      </ion-item>
+      <div slot="content">
+        <ion-list>
+          <ion-item>
+            <ion-input label="Old Password"labelPlacement="floating" type="password" placeholder="My0ldP4ssw0rd" [(ngModel)]="oldPassword"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="New Password" labelPlacement="floating" type="password" placeholder="MyN3wP4ssw0rd!" [(ngModel)]="newPassword"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Confirm New Password" labelPlacement="floating" type="password" placeholder="MyN3wP4ssw0rd!" [(ngModel)]="newPasswordConfirm"></ion-input>
+          </ion-item>
+          <div class="ion-padding">
+            <ion-button (click)="changePassword()">Save</ion-button>
+          </div>
+        </ion-list>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-content>
 
 
 <ion-toast

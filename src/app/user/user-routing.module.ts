@@ -5,29 +5,29 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
-const routes: Routes = [
+import { isAuthenticatedGuard } from '../user/is-authenticated.guard';
+
+const routes_user: Routes = [
   {
-    path: 'login',
-    component: LoginComponent,
-    title: 'Login',
-    data: {
-      test: 'test'
+      path: 'login',
+      component: LoginComponent,
+      title: 'Login',
+    },
+    {
+      path: 'register',
+      component: RegisterComponent,
+      title: 'Register'
+    },
+    {
+      path: 'profile',
+      component: UserProfileComponent,
+      title: 'User profile',
+      canActivate: [isAuthenticatedGuard]
     }
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    title: 'Register'
-  },
-  {
-    path: 'profile',
-    component: UserProfileComponent,
-    title: 'User profile'
-  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes_user)],
   exports: [RouterModule]
 })
 export class UserRoutingModule {}

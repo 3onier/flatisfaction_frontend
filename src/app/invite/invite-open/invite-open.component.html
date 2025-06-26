@@ -1,0 +1,50 @@
+@if (loaded) {
+<ion-modal [isOpen]="loaded">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Invitation</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <h1>
+          You have been invited to the flat: <br>
+          {{ flat.name }}
+        </h1>
+        <p>Do you want to join?</p>
+      </ion-content>
+      <ion-footer>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button expand="block" color="success" (click)="join()">Join</ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button expand="block" color="danger" (click)="close()">Decline</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+}
+
+@if (showError){
+  <ion-modal [isOpen]="showError">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Invitation</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <h1>
+          {{ errorMessage }}
+        </h1>
+      </ion-content>
+      <ion-footer>
+        <ion-button expand="block" (click)="close()">close</ion-button>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+}

@@ -19,8 +19,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component'
   imports: [
     CommonModule, 
     IonicModule,
-    UserRoutingModule,
-    FormsModule
+    FormsModule,
+    UserRoutingModule
   ],
   exports: [
     LoginComponent,

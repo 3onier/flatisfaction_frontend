@@ -1,6 +1,6 @@
 import { NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import { ActivatedRouteSnapshot, RouteReuseStrategy, withDebugTracing } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -10,6 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { UserModule } from './user/user.module';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptor } from './user/auth.service';
+import { FlatModule } from './flat/flat.module';
+import { InviteModule } from './invite/invite.module';
 
 export const AuthInterceptorProvider : Provider = { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true };
 
@@ -17,16 +19,18 @@ export const AuthInterceptorProvider : Provider = { provide: HTTP_INTERCEPTORS, 
   declarations: [AppComponent],
   imports: [
     BrowserModule, 
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
     AppRoutingModule,
-    UserModule
+    UserModule,
+    FlatModule,
+    InviteModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideHttpClient(
       withInterceptorsFromDi()
     ),
-    AuthInterceptorProvider 
+    AuthInterceptorProvider,
   ],
   bootstrap: [AppComponent],
 })
