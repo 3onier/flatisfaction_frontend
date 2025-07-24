@@ -5,4 +5,5 @@ export class Flat {
     public name: string = '';
     public members: Array<User>|Array<number> = [];
     public admins: Array<User>|Array<number> = [];
+    public can_member_edit_chores?: boolean;
 }

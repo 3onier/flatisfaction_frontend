@@ -25,7 +25,7 @@ export class InviteListComponent  implements OnInit, OnDestroy {
   private _changeFlatSubscription: Subscription;
 
   constructor() {
-    this._changeFlatSubscription = FlatService.flatChangeEvent$.subscribe(this.refresh);
+    this._changeFlatSubscription = FlatService.flatChangeEvent$.subscribe(() => this.refresh());
   }
 
   ngOnInit() {

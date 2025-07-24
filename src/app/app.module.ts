@@ -1,6 +1,6 @@
 import { NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ActivatedRouteSnapshot, RouteReuseStrategy, withDebugTracing } from '@angular/router';
+import { RouteReuseStrategy, withDebugTracing } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 

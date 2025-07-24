@@ -1,0 +1,147 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-menu-button slot="start"></ion-menu-button>
+    <ion-title>Edit chore</ion-title>
+    <ion-button slot="end" fill="clear" *ngIf="!readonly" (click)="save()">Save</ion-button>
+    <ion-progress-bar type="indeterminate" *ngIf="isLoading"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="!chore.id && !readonly" inset="true" lines="none">
+    <ion-list-header>
+      <ion-label>Search for previouse and create a copy</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-searchbar (ionInput)="handleSeachbarEvent($event)"></ion-searchbar>
+    </ion-item>
+    <ion-item class="ion-padding-start" button (click)="loadFromId(e.id, true)" lines="full" *ngFor="let e of searchElements$">
+      <ion-label>{{ e.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list inset="true" *ngIf="!isLoading">
+    <ion-item>
+      <ion-input [(ngModel)]="chore.name" [readonly]="readonly" label="Name" labelPlacement="floating" placeholder="Vacuum hallway"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea 
+        [(ngModel)]="chore.description"
+        label="Description" 
+        labelPlacement="floating" 
+        placeholder="The vaccuum is in storage by the front door"
+        autoGrow="true"
+        [readonly]="readonly"
+        ></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-range [(ngModel)]="chore.effort" [disabled]="readonly" label="How much effort is this task" min="1" max="10" snaps="true" pin="true"></ion-range>
+    </ion-item>
+    <ion-item *ngIf="showElements.startDate">
+      <ion-label>Starts by</ion-label>
+      <ion-datetime-button datetime="datetime-start"></ion-datetime-button>
+        <ion-button slot="end" fill="none" [disabled]="readonly" (click)="chore.start_date = undefined">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+    </ion-item>
+    <ion-item *ngIf="showElements.indefinite">
+      <ion-toggle [checked]="chore.end_date == null" [disabled]="readonly" (ionChange)="handleToggleRunsForever($event)">Chore runs forever</ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="showElements.endDate">
+      <ion-label>Ends by</ion-label>
+      <ion-datetime-button datetime="datetime-end"></ion-datetime-button>
+      <ion-button slot="end" [disabled]="readonly" fill="none" (click)="chore.end_date = undefined">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item *ngIf="showElements.dueDate">
+      <ion-label>Finished By</ion-label>
+      <ion-datetime-button datetime="datetime-irregular" [disabled]="readonly"></ion-datetime-button>
+    </ion-item>
+    <ion-item *ngIf="!isLoading">
+      <ion-label>How often does this chore need to be done</ion-label>
+      <ion-select slot="end" [disabled]="readonly" interface="popover" [(ngModel)]="chore.frequency" (ionChange)="handleFrequencySelection()">
+        <ion-select-option [value]="frequencyEnums.once">Don't repeat</ion-select-option>
+        <ion-select-option [value]="frequencyEnums.daily">Daily</ion-select-option>
+        <ion-select-option [value]="frequencyEnums.weekly">Weekly</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="showElements.repGap">
+      <ion-label>Gap between each repitition?</ion-label>
+      <ion-input class="ion-text-right" [disabled]="readonly" [(ngModel)]="chore.frequency_gap" type="number" slot="end" min="1" (ionChange)="handleFrequencySelection()"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="showElements.weekdays">
+      <ion-select label="Weekdays" [disabled]="readonly" [value]="selectedWeekdays" multiple="true" interface="popover" (ionChange)="handleWeekdaySelect($event)">
+        <ion-select-option value="1">Monday</ion-select-option>
+        <ion-select-option value="2">Tuesday</ion-select-option>
+        <ion-select-option value="3">Wednesday</ion-select-option>
+        <ion-select-option value="4">Thursday</ion-select-option>
+        <ion-select-option value="5">Friday</ion-select-option>
+        <ion-select-option value="6">Saturday</ion-select-option>
+        <ion-select-option value="0">Sunday</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list inset="true" *ngIf="!isLoading">
+    <ion-list-header>
+      <ion-label>Preview when the chores have to be done</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-datetime presentation="date" firstDayOfWeek="1" size="cover" [highlightedDates]="hightlightesDates"></ion-datetime>
+    </ion-item>
+  </ion-list>
+
+  <ion-list inset="true">
+    <ion-list-header>
+      <ion-label>Who is Responsible</ion-label>
+    </ion-list-header>
+    @if(isLoading){
+      <ion-item>
+        <ion-icon icon="person" slot="start"></ion-icon>
+        <ion-label><ion-skeleton-text animated="true" style="width: 80%;"></ion-skeleton-text></ion-label>
+      </ion-item>
+    }@else {
+      <ion-item *ngFor="let member of flatMembers">
+        <ion-icon icon="person" slot="start"></ion-icon>
+        <ion-label> {{ member.username }} </ion-label>
+        <ion-checkbox slot="end" [disabled]="readonly" [checked]="assignedTaskMap.get(member) || false" (ionChange)="handleMembersCheck($event, member)"></ion-checkbox>
+      </ion-item>
+    }
+  </ion-list>
+  <ion-button 
+    class="ion-margin"
+    *ngIf="chore.id && !readonly"
+    color="danger"
+    expand="block"
+    (click)="delete()"
+    >
+    <ion-icon name="trash-outline"></ion-icon>
+    delete
+  </ion-button>
+
+</ion-content>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime [value]="chore.start_date?.toISOString()" (ionChange)="handleStartDaySet($event)" id="datetime-irregular" showDefaultButtons="true" presentation="date" showDefaultTitle="true" firstDayOfWeek="1"></ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime [value]="chore.start_date?.toISOString()" (ionChange)="handleStartDaySet($event)" id="datetime-start" showDefaultButtons="true" presentation="date" showDefaultTitle="true" firstDayOfWeek="1"></ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime [value]="chore.end_date?.toISOString()" (ionChange)="handleEndDateSet($event)" [min]="chore.start_date?.toISOString()" id="datetime-end" showDefaultButtons="true" presentation="date" showDefaultTitle="true" firstDayOfWeek="1"></ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-alert
+  header="Not Found"
+  message="We coult not find the chore"
+  [isOpen]="cannotFindChoreAlert"
+  [buttons]="cannotFindChoreAlertButtons"
+>
+</ion-alert>

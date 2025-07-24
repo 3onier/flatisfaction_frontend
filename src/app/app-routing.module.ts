@@ -29,6 +29,11 @@ const routes: Routes = [
     canActivate: [isAuthenticatedGuard]
   },
   {
+    path: 'chore',
+    loadChildren: () => import('./chore/chore.module').then(m => m.ChoreModule),
+    canActivate: [isAuthenticatedGuard, flatSelectedGuard]
+  },
+  {
     path: '**',
     redirectTo: 'home'
   }

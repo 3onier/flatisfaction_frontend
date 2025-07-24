@@ -1,1 +1,13 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-menu-button slot="start"></ion-menu-button>
+        <ion-title>Dashboard</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+<div class="ion-padding">
+    <h1>My Chores for next 7 days</h1>
+    <app-chore-calendar-agenda *ngIf="user" [user]="user.id || null" [showDate]="false"></app-chore-calendar-agenda>
+</div>
 
+</ion-content>
