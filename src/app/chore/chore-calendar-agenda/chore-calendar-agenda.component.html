@@ -1,0 +1,108 @@
+<ion-grid *ngIf="showDate" class="">
+  <ion-row class="ion-justify-content-center ion-align-items-center">
+    <ion-col size="auto"><ion-button fill="clear" (click)="changeWeek(-1)"><ion-icon icon="remove"></ion-icon></ion-button></ion-col>
+    <ion-col size="auto" ><ion-datetime-button datetime="calendar-filter-start"></ion-datetime-button></ion-col>
+    <ion-col size="auto"> - </ion-col>
+    <ion-col size="auto"><ion-datetime-button datetime="calendar-filter-end"></ion-datetime-button></ion-col>
+    <ion-col size="auto"><ion-button fill="clear" (click)="changeWeek(1)"><ion-icon icon="add"></ion-icon></ion-button></ion-col>
+  </ion-row>
+</ion-grid>
+
+@if(!isLoading){
+  @if(choreAppointments.keys().next().value){
+  <ion-item-group *ngFor="let e of choreAppointments | keyvalue: null">
+      <ion-item-divider>
+        <ion-label>{{ e.key | dateHumanReadable}}</ion-label>
+      </ion-item-divider>
+      <ion-item-sliding *ngFor="let app of e.value">
+        <ion-item-options side="start">
+          <ion-item-option color="primary" (click)="handleReassignClick(app)" >Reassign</ion-item-option>
+          <ion-item-option color="warning" (click)="handleClickReset(app)">Reset</ion-item-option>
+          <ion-item-option color="danger" (click)="handleClickDelete(app)">Delete</ion-item-option>
+        </ion-item-options>
+        <ion-item>
+          <ion-label>
+            <h3>{{ app.chore_verbose?.name }}</h3>
+            <p>Assigned to: {{ app.assigned_member_verbose?.username }}</p>
+          </ion-label>
+          <ion-badge slot="end" color="success" *ngIf="app.executor_verbose && app.executor == app.assigned_member">
+            {{ app.executor_verbose.username }} 
+          </ion-badge>
+          <ion-badge slot="end" color="warning" *ngIf="app.executor_verbose && app.executor != app.assigned_member">
+            {{ app.executor_verbose.username }}
+          </ion-badge>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="warning" (click)="executorAlertPresent(app, e.key)">Mark someone else</ion-item-option>
+          <ion-item-option color="primary" (click)="handleClickDone(app)">Done</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
+  }
+  @else {
+    <ion-item disabled="true" lines="false">
+      <ion-label class="ion-text-center">
+        <h1>No Chores to Do</h1>
+      </ion-label>
+    </ion-item>
+  }
+}
+@if(isLoading){
+  <ion-item-group *ngFor="let i of [2,1,3]">
+    <ion-item-divider>
+      <ion-label><ion-skeleton-text style="width: 150px;"></ion-skeleton-text></ion-label>
+    </ion-item-divider>
+    <ion-item *ngFor="let _ of [].constructor(i)">
+      <ion-label>
+        <h3><ion-skeleton-text animated="true" style="width: 25%; height: 100%;"></ion-skeleton-text></h3>
+        <p><ion-skeleton-text style="width: 80%;"></ion-skeleton-text></p>
+        <p><ion-skeleton-text style="width: 50%;"></ion-skeleton-text></p>
+      </ion-label>
+    </ion-item>
+  </ion-item-group>
+}
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime 
+      [value]="startDate.toISOString()" 
+      (ionChange)="changeStartDate($event)"
+      id="calendar-filter-start" 
+      showDefaultButtons="true" 
+      presentation="date" 
+      showDefaultTitle="true" 
+      firstDayOfWeek="1"
+      [formatOptions]="{
+        date: {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric',
+          weekday: 'short'
+        }
+      }"
+      ></ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime 
+      [value]="endDate.toISOString()" 
+      (ionChange)="changeEndDate($event)"
+      id="calendar-filter-end" 
+      showDefaultButtons="true" 
+      presentation="date" 
+      showDefaultTitle="true" 
+      firstDayOfWeek="1"
+      [formatOptions]="{
+        date: {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric',
+          weekday: 'short'
+        }
+      }"
+      [min]="startDate.toISOString()"
+      ></ion-datetime>
+  </ng-template>
+</ion-modal>

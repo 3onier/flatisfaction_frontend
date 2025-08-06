@@ -22,6 +22,14 @@
               [readonly]="!isAdmin"
             ></ion-input>
           </ion-item>
+          <ion-item>
+            <ion-toggle
+              [(ngModel)]="flat.can_member_edit_chores"
+              [disabled]="!isAdmin"
+            >
+              Flat members can edit chores
+            </ion-toggle>
+          </ion-item>
           <div class="ion-padding" *ngIf="isAdmin">
             <ion-button (click)="updateFlat()">save</ion-button>
           </div>

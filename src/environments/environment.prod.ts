@@ -1,5 +1,6 @@
 export const environment = {
-  production: true,
-  apiUrl: 'http://localhost/api/',
+  production: false,
+  appUrl: 'http://192.168.0.10/',
+  apiUrl: 'http://192.168.0.10/api/',
   appTitle: "Flatisfaction"
 };
